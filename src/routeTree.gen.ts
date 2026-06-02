@@ -9,38 +9,226 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as StoreRouteImport } from './routes/store'
+import { Route as SourcesRouteImport } from './routes/sources'
+import { Route as ScriptsRouteImport } from './routes/scripts'
+import { Route as ReviewsRouteImport } from './routes/reviews'
+import { Route as RedeemAdminRouteImport } from './routes/redeem-admin'
+import { Route as ProfileRouteImport } from './routes/profile'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as SourcesSlugRouteImport } from './routes/sources.$slug'
+import { Route as ScriptsSlugRouteImport } from './routes/scripts.$slug'
 
+const StoreRoute = StoreRouteImport.update({
+  id: '/store',
+  path: '/store',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SourcesRoute = SourcesRouteImport.update({
+  id: '/sources',
+  path: '/sources',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ScriptsRoute = ScriptsRouteImport.update({
+  id: '/scripts',
+  path: '/scripts',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReviewsRoute = ReviewsRouteImport.update({
+  id: '/reviews',
+  path: '/reviews',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RedeemAdminRoute = RedeemAdminRouteImport.update({
+  id: '/redeem-admin',
+  path: '/redeem-admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfileRoute = ProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SourcesSlugRoute = SourcesSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => SourcesRoute,
+} as any)
+const ScriptsSlugRoute = ScriptsSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => ScriptsRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
+  '/login': typeof LoginRoute
+  '/profile': typeof ProfileRoute
+  '/redeem-admin': typeof RedeemAdminRoute
+  '/reviews': typeof ReviewsRoute
+  '/scripts': typeof ScriptsRouteWithChildren
+  '/sources': typeof SourcesRouteWithChildren
+  '/store': typeof StoreRoute
+  '/scripts/$slug': typeof ScriptsSlugRoute
+  '/sources/$slug': typeof SourcesSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
+  '/login': typeof LoginRoute
+  '/profile': typeof ProfileRoute
+  '/redeem-admin': typeof RedeemAdminRoute
+  '/reviews': typeof ReviewsRoute
+  '/scripts': typeof ScriptsRouteWithChildren
+  '/sources': typeof SourcesRouteWithChildren
+  '/store': typeof StoreRoute
+  '/scripts/$slug': typeof ScriptsSlugRoute
+  '/sources/$slug': typeof SourcesSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
+  '/login': typeof LoginRoute
+  '/profile': typeof ProfileRoute
+  '/redeem-admin': typeof RedeemAdminRoute
+  '/reviews': typeof ReviewsRoute
+  '/scripts': typeof ScriptsRouteWithChildren
+  '/sources': typeof SourcesRouteWithChildren
+  '/store': typeof StoreRoute
+  '/scripts/$slug': typeof ScriptsSlugRoute
+  '/sources/$slug': typeof SourcesSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/admin'
+    | '/login'
+    | '/profile'
+    | '/redeem-admin'
+    | '/reviews'
+    | '/scripts'
+    | '/sources'
+    | '/store'
+    | '/scripts/$slug'
+    | '/sources/$slug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/admin'
+    | '/login'
+    | '/profile'
+    | '/redeem-admin'
+    | '/reviews'
+    | '/scripts'
+    | '/sources'
+    | '/store'
+    | '/scripts/$slug'
+    | '/sources/$slug'
+  id:
+    | '__root__'
+    | '/'
+    | '/admin'
+    | '/login'
+    | '/profile'
+    | '/redeem-admin'
+    | '/reviews'
+    | '/scripts'
+    | '/sources'
+    | '/store'
+    | '/scripts/$slug'
+    | '/sources/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRoute: typeof AdminRoute
+  LoginRoute: typeof LoginRoute
+  ProfileRoute: typeof ProfileRoute
+  RedeemAdminRoute: typeof RedeemAdminRoute
+  ReviewsRoute: typeof ReviewsRoute
+  ScriptsRoute: typeof ScriptsRouteWithChildren
+  SourcesRoute: typeof SourcesRouteWithChildren
+  StoreRoute: typeof StoreRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/store': {
+      id: '/store'
+      path: '/store'
+      fullPath: '/store'
+      preLoaderRoute: typeof StoreRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sources': {
+      id: '/sources'
+      path: '/sources'
+      fullPath: '/sources'
+      preLoaderRoute: typeof SourcesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/scripts': {
+      id: '/scripts'
+      path: '/scripts'
+      fullPath: '/scripts'
+      preLoaderRoute: typeof ScriptsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reviews': {
+      id: '/reviews'
+      path: '/reviews'
+      fullPath: '/reviews'
+      preLoaderRoute: typeof ReviewsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/redeem-admin': {
+      id: '/redeem-admin'
+      path: '/redeem-admin'
+      fullPath: '/redeem-admin'
+      preLoaderRoute: typeof RedeemAdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,22 +236,56 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/sources/$slug': {
+      id: '/sources/$slug'
+      path: '/$slug'
+      fullPath: '/sources/$slug'
+      preLoaderRoute: typeof SourcesSlugRouteImport
+      parentRoute: typeof SourcesRoute
+    }
+    '/scripts/$slug': {
+      id: '/scripts/$slug'
+      path: '/$slug'
+      fullPath: '/scripts/$slug'
+      preLoaderRoute: typeof ScriptsSlugRouteImport
+      parentRoute: typeof ScriptsRoute
+    }
   }
 }
 
+interface ScriptsRouteChildren {
+  ScriptsSlugRoute: typeof ScriptsSlugRoute
+}
+
+const ScriptsRouteChildren: ScriptsRouteChildren = {
+  ScriptsSlugRoute: ScriptsSlugRoute,
+}
+
+const ScriptsRouteWithChildren =
+  ScriptsRoute._addFileChildren(ScriptsRouteChildren)
+
+interface SourcesRouteChildren {
+  SourcesSlugRoute: typeof SourcesSlugRoute
+}
+
+const SourcesRouteChildren: SourcesRouteChildren = {
+  SourcesSlugRoute: SourcesSlugRoute,
+}
+
+const SourcesRouteWithChildren =
+  SourcesRoute._addFileChildren(SourcesRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRoute: AdminRoute,
+  LoginRoute: LoginRoute,
+  ProfileRoute: ProfileRoute,
+  RedeemAdminRoute: RedeemAdminRoute,
+  ReviewsRoute: ReviewsRoute,
+  ScriptsRoute: ScriptsRouteWithChildren,
+  SourcesRoute: SourcesRouteWithChildren,
+  StoreRoute: StoreRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
