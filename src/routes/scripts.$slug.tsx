@@ -8,7 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Eye, Heart, Star, ExternalLink } from "lucide-react";
 import { badgeClass, computeBadges } from "@/lib/site-utils";
 import { useServerFn } from "@tanstack/react-start";
-import { incrementScriptViews } from "@/lib/api.functions";
+import { getScriptSource, incrementScriptViews } from "@/lib/api.functions";
 import { toast } from "sonner";
 import { Highlight, themes } from "prism-react-renderer";
 import { SCRIPT_PUBLIC_COLS } from "@/lib/db-columns";
@@ -22,6 +22,7 @@ function ScriptDetail() {
   const { user } = useAuth();
   const qc = useQueryClient();
   const incView = useServerFn(incrementScriptViews);
+  const fetchScriptSource = useServerFn(getScriptSource);
 
   const { data: script } = useQuery({
     queryKey: ["script", slug],
@@ -35,8 +36,7 @@ function ScriptDetail() {
     queryKey: ["script-source", script?.id],
     enabled: !!script?.id,
     queryFn: async () => {
-      const { data } = await supabase.rpc("get_script_source", { _script_id: script!.id });
-      return (data as string | null) ?? "";
+      return await fetchScriptSource({ data: { id: script!.id } });
     },
   });
 
