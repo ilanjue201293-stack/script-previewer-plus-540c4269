@@ -37,6 +37,22 @@ export const incrementSourceViews = createServerFn({ method: "POST" })
     return { ok: true };
   });
 
+export const getScriptSource = createServerFn({ method: "GET" })
+  .inputValidator((d: { id: string }) => z.object({ id: z.string().uuid() }).parse(d))
+  .handler(async ({ data }) => {
+    const { data: script, error } = await supabaseAdmin.from("scripts").select("source_code,is_premium").eq("id", data.id).maybeSingle();
+    if (error) throw new Error(error.message);
+    return script?.is_premium ? "" : script?.source_code ?? "";
+  });
+
+export const getSourceCode = createServerFn({ method: "GET" })
+  .inputValidator((d: { id: string }) => z.object({ id: z.string().uuid() }).parse(d))
+  .handler(async ({ data }) => {
+    const { data: source, error } = await supabaseAdmin.from("sources").select("source_code,access_method").eq("id", data.id).maybeSingle();
+    if (error) throw new Error(error.message);
+    return source?.access_method === "free" ? source?.source_code ?? "" : "";
+  });
+
 /* ---------------- ADMIN CODES ---------------- */
 export const redeemAdminCode = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
@@ -106,4 +122,24 @@ export const notifyContentChange = createServerFn({ method: "POST" })
     const path = data.kind === "script" ? `/scripts/${data.slug}` : `/sources/${data.slug}`;
     await sendWebhook(title, `A ${data.kind} was ${data.action} on SAB Scripting.`, path);
     return { ok: true };
+  });
+
+export const getAdminScriptSource = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: { id: string }) => z.object({ id: z.string().uuid() }).parse(d))
+  .handler(async ({ data, context }) => {
+    await assertAdmin(context.supabase, context.userId);
+    const { data: script, error } = await supabaseAdmin.from("scripts").select("source_code").eq("id", data.id).maybeSingle();
+    if (error) throw new Error(error.message);
+    return script?.source_code ?? "";
+  });
+
+export const getAdminSourceCode = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: { id: string }) => z.object({ id: z.string().uuid() }).parse(d))
+  .handler(async ({ data, context }) => {
+    await assertAdmin(context.supabase, context.userId);
+    const { data: source, error } = await supabaseAdmin.from("sources").select("source_code").eq("id", data.id).maybeSingle();
+    if (error) throw new Error(error.message);
+    return source?.source_code ?? "";
   });
