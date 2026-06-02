@@ -5,7 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Highlight, themes } from "prism-react-renderer";
 import { useServerFn } from "@tanstack/react-start";
-import { incrementSourceViews } from "@/lib/api.functions";
+import { getSourceCode, incrementSourceViews } from "@/lib/api.functions";
 import { toast } from "sonner";
 import { Maximize2, Eye, ExternalLink } from "lucide-react";
 import { SOURCE_PUBLIC_COLS } from "@/lib/db-columns";
@@ -16,6 +16,7 @@ export const Route = createFileRoute("/sources/$slug")({ component: SourceDetail
 function SourceDetail() {
   const { slug } = Route.useParams();
   const incView = useServerFn(incrementSourceViews);
+  const fetchSourceCode = useServerFn(getSourceCode);
   const [full, setFull] = useState(false);
   const [expanded, setExpanded] = useState(false);
 
@@ -28,8 +29,7 @@ function SourceDetail() {
     queryKey: ["source-code", (src as any)?.id],
     enabled: !!(src as any)?.id,
     queryFn: async () => {
-      const { data } = await supabase.rpc("get_source_source", { _source_id: (src as any).id });
-      return (data as string | null) ?? "";
+      return await fetchSourceCode({ data: { id: (src as any).id } });
     },
   });
 
