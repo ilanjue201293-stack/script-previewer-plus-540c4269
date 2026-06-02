@@ -14,7 +14,369 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      admin_codes: {
+        Row: {
+          code: string
+          created_at: string
+          created_by: string | null
+          id: string
+          revoked: boolean
+          used_at: string | null
+          used_by: string | null
+        }
+        Insert: {
+          code: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          revoked?: boolean
+          used_at?: string | null
+          used_by?: string | null
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          revoked?: boolean
+          used_at?: string | null
+          used_by?: string | null
+        }
+        Relationships: []
+      }
+      favorites: {
+        Row: {
+          created_at: string
+          script_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          script_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          script_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "favorites_script_id_fkey"
+            columns: ["script_id"]
+            isOneToOne: false
+            referencedRelation: "scripts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      likes: {
+        Row: {
+          created_at: string
+          script_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          script_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          script_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "likes_script_id_fkey"
+            columns: ["script_id"]
+            isOneToOne: false
+            referencedRelation: "scripts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          bio: string | null
+          created_at: string
+          id: string
+          username: string | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          bio?: string | null
+          created_at?: string
+          id: string
+          username?: string | null
+        }
+        Update: {
+          avatar_url?: string | null
+          bio?: string | null
+          created_at?: string
+          id?: string
+          username?: string | null
+        }
+        Relationships: []
+      }
+      reviews: {
+        Row: {
+          created_at: string
+          id: string
+          rating: number
+          script_id: string
+          text: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          rating: number
+          script_id: string
+          text?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          rating?: number
+          script_id?: string
+          text?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reviews_script_id_fkey"
+            columns: ["script_id"]
+            isOneToOne: false
+            referencedRelation: "scripts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      scripts: {
+        Row: {
+          badges: string[]
+          created_at: string
+          description: string
+          developer: string | null
+          discord_url: string | null
+          features: string[]
+          id: string
+          is_premium: boolean
+          ltc_address: string | null
+          name: string
+          payment_method: Database["public"]["Enums"]["payment_method"] | null
+          paypal_url: string | null
+          screenshots: string[]
+          sellauth_url: string | null
+          slug: string
+          source_code: string
+          status: Database["public"]["Enums"]["script_status"]
+          tags: string[]
+          updated_at: string
+          verified_by_nalyy: boolean
+          views: number
+          youtube_url: string | null
+        }
+        Insert: {
+          badges?: string[]
+          created_at?: string
+          description?: string
+          developer?: string | null
+          discord_url?: string | null
+          features?: string[]
+          id?: string
+          is_premium?: boolean
+          ltc_address?: string | null
+          name: string
+          payment_method?: Database["public"]["Enums"]["payment_method"] | null
+          paypal_url?: string | null
+          screenshots?: string[]
+          sellauth_url?: string | null
+          slug: string
+          source_code?: string
+          status?: Database["public"]["Enums"]["script_status"]
+          tags?: string[]
+          updated_at?: string
+          verified_by_nalyy?: boolean
+          views?: number
+          youtube_url?: string | null
+        }
+        Update: {
+          badges?: string[]
+          created_at?: string
+          description?: string
+          developer?: string | null
+          discord_url?: string | null
+          features?: string[]
+          id?: string
+          is_premium?: boolean
+          ltc_address?: string | null
+          name?: string
+          payment_method?: Database["public"]["Enums"]["payment_method"] | null
+          paypal_url?: string | null
+          screenshots?: string[]
+          sellauth_url?: string | null
+          slug?: string
+          source_code?: string
+          status?: Database["public"]["Enums"]["script_status"]
+          tags?: string[]
+          updated_at?: string
+          verified_by_nalyy?: boolean
+          views?: number
+          youtube_url?: string | null
+        }
+        Relationships: []
+      }
+      site_settings: {
+        Row: {
+          default_ltc_address: string | null
+          discord_url: string | null
+          id: number
+          updated_at: string
+          webhook_url: string | null
+        }
+        Insert: {
+          default_ltc_address?: string | null
+          discord_url?: string | null
+          id?: number
+          updated_at?: string
+          webhook_url?: string | null
+        }
+        Update: {
+          default_ltc_address?: string | null
+          discord_url?: string | null
+          id?: number
+          updated_at?: string
+          webhook_url?: string | null
+        }
+        Relationships: []
+      }
+      sources: {
+        Row: {
+          access_method: Database["public"]["Enums"]["access_method"]
+          created_at: string
+          description: string
+          discord_redirect_url: string | null
+          discord_url: string | null
+          id: string
+          ltc_address: string | null
+          name: string
+          paypal_url: string | null
+          screenshots: string[]
+          sellauth_url: string | null
+          slug: string
+          source_code: string
+          status: Database["public"]["Enums"]["source_status"]
+          tags: string[]
+          updated_at: string
+          views: number
+        }
+        Insert: {
+          access_method?: Database["public"]["Enums"]["access_method"]
+          created_at?: string
+          description?: string
+          discord_redirect_url?: string | null
+          discord_url?: string | null
+          id?: string
+          ltc_address?: string | null
+          name: string
+          paypal_url?: string | null
+          screenshots?: string[]
+          sellauth_url?: string | null
+          slug: string
+          source_code?: string
+          status?: Database["public"]["Enums"]["source_status"]
+          tags?: string[]
+          updated_at?: string
+          views?: number
+        }
+        Update: {
+          access_method?: Database["public"]["Enums"]["access_method"]
+          created_at?: string
+          description?: string
+          discord_redirect_url?: string | null
+          discord_url?: string | null
+          id?: string
+          ltc_address?: string | null
+          name?: string
+          paypal_url?: string | null
+          screenshots?: string[]
+          sellauth_url?: string | null
+          slug?: string
+          source_code?: string
+          status?: Database["public"]["Enums"]["source_status"]
+          tags?: string[]
+          updated_at?: string
+          views?: number
+        }
+        Relationships: []
+      }
+      store_products: {
+        Row: {
+          created_at: string
+          description: string
+          id: string
+          image: string | null
+          ltc_address: string | null
+          name: string
+          payment_method: Database["public"]["Enums"]["payment_method"] | null
+          paypal_url: string | null
+          price: number
+          sellauth_url: string | null
+        }
+        Insert: {
+          created_at?: string
+          description?: string
+          id?: string
+          image?: string | null
+          ltc_address?: string | null
+          name: string
+          payment_method?: Database["public"]["Enums"]["payment_method"] | null
+          paypal_url?: string | null
+          price?: number
+          sellauth_url?: string | null
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          id?: string
+          image?: string | null
+          ltc_address?: string | null
+          name?: string
+          payment_method?: Database["public"]["Enums"]["payment_method"] | null
+          paypal_url?: string | null
+          price?: number
+          sellauth_url?: string | null
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +385,11 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      access_method: "free" | "sellauth" | "paypal" | "ltc" | "discord"
+      app_role: "user" | "admin"
+      payment_method: "sellauth" | "paypal" | "ltc"
+      script_status: "working" | "patched" | "updating"
+      source_status: "ready" | "needs_modification"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +516,12 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      access_method: ["free", "sellauth", "paypal", "ltc", "discord"],
+      app_role: ["user", "admin"],
+      payment_method: ["sellauth", "paypal", "ltc"],
+      script_status: ["working", "patched", "updating"],
+      source_status: ["ready", "needs_modification"],
+    },
   },
 } as const

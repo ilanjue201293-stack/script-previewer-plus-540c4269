@@ -4,7 +4,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@/hooks/use-auth";
 import { supabase } from "@/integrations/supabase/client";
 import { useServerFn } from "@tanstack/react-start";
-import { generateAdminCode, revokeAdminCode, listUsers, setUserAdmin, notifyContentChange } from "@/lib/api.functions";
+import { generateAdminCode, revokeAdminCode, listUsers, setUserAdmin, notifyContentChange, getAdminScriptSource, getAdminSourceCode } from "@/lib/api.functions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -87,6 +87,7 @@ function DashboardPanel() {
 function ScriptsPanel() {
   const qc = useQueryClient();
   const notify = useServerFn(notifyContentChange);
+  const fetchAdminScriptSource = useServerFn(getAdminScriptSource);
   const { data: scripts } = useQuery({
     queryKey: ["admin-scripts"],
     queryFn: async () => (await supabase.from("scripts").select("id,name,slug,description,features,screenshots,youtube_url,discord_url,tags,status,is_premium,payment_method,sellauth_url,paypal_url,ltc_address,verified_by_nalyy,badges,views,developer,created_at,updated_at").order("created_at", { ascending: false })).data ?? [],
@@ -190,8 +191,8 @@ function ScriptsPanel() {
             </div>
             <div className="flex gap-2">
               <Button size="sm" variant="outline" onClick={async () => {
-                const { data } = await supabase.rpc("admin_get_script_source", { _script_id: s.id });
-                setEditing({ ...s, source_code: (data as string | null) ?? "" });
+                const sourceCode = await fetchAdminScriptSource({ data: { id: s.id } });
+                setEditing({ ...s, source_code: sourceCode ?? "" });
               }}>Edit</Button>
               <Button size="sm" variant="outline" onClick={() => { if (confirm("Delete?")) del.mutate(s.id); }}><Trash2 className="h-4 w-4" /></Button>
             </div>
@@ -206,6 +207,7 @@ function ScriptsPanel() {
 function SourcesPanel() {
   const qc = useQueryClient();
   const notify = useServerFn(notifyContentChange);
+  const fetchAdminSourceCode = useServerFn(getAdminSourceCode);
   const { data: items } = useQuery({
     queryKey: ["admin-sources"],
     queryFn: async () => (await supabase.from("sources").select("id,name,slug,description,screenshots,discord_url,tags,status,access_method,sellauth_url,paypal_url,ltc_address,discord_redirect_url,views,created_at,updated_at").order("created_at", { ascending: false })).data ?? [],
@@ -286,8 +288,8 @@ function SourcesPanel() {
             <div><div className="font-semibold">{s.name}</div><div className="text-xs text-muted-foreground">/{s.slug} · {s.access_method}</div></div>
             <div className="flex gap-2">
               <Button size="sm" variant="outline" onClick={async () => {
-                const { data } = await supabase.rpc("admin_get_source_source", { _source_id: s.id });
-                setEditing({ ...s, source_code: (data as string | null) ?? "" });
+                const sourceCode = await fetchAdminSourceCode({ data: { id: s.id } });
+                setEditing({ ...s, source_code: sourceCode ?? "" });
               }}>Edit</Button>
               <Button size="sm" variant="outline" onClick={() => { if (confirm("Delete?")) del.mutate(s.id); }}><Trash2 className="h-4 w-4" /></Button>
             </div>
