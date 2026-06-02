@@ -134,12 +134,12 @@ function ScriptDetail() {
         {/* Loader */}
         <div className="mb-6">
           <h3 className="font-semibold mb-2">Loader</h3>
-          {script.is_premium && !sourceCode ? (
+          {script.is_premium ? (
             <div className="relative">
               <div className="blur-source pointer-events-none select-none">
-                <CodeBlock code={"-- premium loader\n-- purchase to unlock"} />
+                <CodeBlock code={sourceCode || "-- premium loader\n-- purchase to unlock"} />
               </div>
-              <div className="absolute inset-0 flex items-center justify-center">
+              <div className="absolute inset-0 z-10 flex items-center justify-center">
                 <div className="text-center glass rounded-xl p-6">
                   <p className="mb-3 font-semibold">This is a premium script</p>
                   {payUrl ? (
