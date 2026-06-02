@@ -382,10 +382,6 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      admin_get_script_source: { Args: { _script_id: string }; Returns: string }
-      admin_get_source_source: { Args: { _source_id: string }; Returns: string }
-      get_script_source: { Args: { _script_id: string }; Returns: string }
-      get_source_source: { Args: { _source_id: string }; Returns: string }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
